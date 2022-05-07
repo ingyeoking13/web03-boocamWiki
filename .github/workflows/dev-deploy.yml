@@ -2,7 +2,7 @@ name: development deploy
 
 on:
   push:
-    branches: [develop]
+    # branches: [develop]
 
 jobs:
   deploy:
@@ -20,16 +20,16 @@ jobs:
           port: ${{ secrets.DEV_SERVER_PORT }}
           envs: PROJECT_FOLDER
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
             cd $PROJECT_FOLDER
             git fetch
             git pull origin
-            cd client
-            npm i
-            npm run build
+            ./scripts/start.sh
             cd ../server
             npm i
             npm run build
             cd ../docker
-            cp -rf nginx-dev nginx/nginx
+            cp -rf nginx-dev/* nginx/nginx
             docker exec dev-boocam-pm2 pm2 reload /dist/app.js
             docker exec dev-boocam-nginx service nginx reload

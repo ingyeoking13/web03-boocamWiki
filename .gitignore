@@ -4,11 +4,7 @@
 
 ### docker files
 
-docker/nginx/build/**
-docker/nginx-prod/nginx/build/**
-docker/nginx-dev/nginx/build/**
-docker/certbot/**
-docker/node/**
+pm2/**
 
 ### Linux
 

@@ -3,26 +3,28 @@ version: '3.7'
 services:
   nginx:
     image: nginx
-    restart: unless-stopped
+    restart: 'no'
     container_name: dev-boocam-nginx
     ports:
       - '3002:80'
     volumes:
-      - ./nginx/build:/usr/share/nginx/html
-      - ./nginx/nginx:/etc/nginx
+      - ./nginx/nginx-dev/build:/usr/share/nginx/html
+      - ./nginx/nginx-dev/nginx:/etc/nginx
   pm2:
     image: keymetrics/pm2:16-jessie
-    restart: unless-stopped
+    restart: 'no'
+    container_name: dev-boocam-pm2
     ports:
       - '3003:3001'
     volumes:
-      - ./node/dist:/dist
+      - ./pm2/dist:/dist
     command: sh -c "ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && pm2 start /dist/app.js -f -i max && tail -f /dev/null"
   mysql:
     image: mysql:5.7.36
     ports:
       - '3307:3006'
     restart: unless-stopped
+    container_name: dev-boocam-mysql
     volumes:
       - /var/lib/mysql-dev:/var/lib/mysql
     environment:

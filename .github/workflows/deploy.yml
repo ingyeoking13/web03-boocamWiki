@@ -2,7 +2,7 @@ name: production deploy
 
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
 
 jobs:
   deploy:
@@ -20,16 +20,16 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           envs: PROJECT_FOLDER
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
             cd $PROJECT_FOLDER
             git fetch
             git pull origin
-            cd client
-            npm i
-            npm run build
+            ./scripts/start.sh
             cd ../server
             npm i
             npm run build
             cd ../docker
-            mv -f nginx-prod/nginx nginx/nginx
+            mv -f nginx-prod/* nginx/nginx
             docker exec docker_pm2_1 pm2 reload /dist/app.js
             docker exec docker_nginx_1 service nginx reload

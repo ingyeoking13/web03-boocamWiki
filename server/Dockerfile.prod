@@ -1,0 +1,11 @@
+FROM node:16.13.0
+
+WORKDIR /usr/src/app
+COPY ./src ./src
+COPY ./.env ./
+COPY ./package* ./
+COPY ./tsconfig* ./
+COPY ./eslint* ./
+
+RUN npm i \
+    && npm run build
